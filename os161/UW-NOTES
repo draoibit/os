@@ -1,0 +1,147 @@
+Thu Jun 27 14:06:20 EDT 2013
+Tim Brecht
+======================================================================
+WARNING:
+There may be a problem with the patched version.
+I don't think that the proc and address space activation stuff
+is working properly.
+In particular it looks like there may be problems with as_activate
+which eventually needs a proc and the test threads don't actually
+have a proc. Maybe using a kernel proc will help (or fix this?)
+FIXED.
+
+======================================================================
+To configure
+./configure --ostree=$HOME/cs350-os161/root
+
+Tags in the git repository
+Main branch.
+v1.0: is the original 1.99.05 code.
+======================================================================
+
+Branch v1.1-patched
+v1.1: is the 1.99.05 code with the patches from 
+      http://www.eecs.harvard.edu/~dholland/cs161/pending/
+      and some local fixes and modifications
+
+
+Details about patched version below.
+
+----------------------------------------------------------------------
+Patched version needed a bit of tweaking. See #ifdef UW.
+It seems that although thread_create now requires a proc parameter
+a few places in the code haven't been modified to pass the proc (NULL)
+and were still using the old thread_fork parameters.
+The order of the parameters to thread_fork has also changed.
+
+#	modified:   os161-base-1.99.05-patched/kern/include/array.h
+Needed to add
+#include <lib.h>
+
+#	modified:   os161-base-1.99.05-patched/kern/test/fstest.c
+Parameters to thread_fork were off for one call.
+
+#	modified:   os161-base-1.99.05-patched/mk/os161.kernel.mk
+Added -DUW
+----------------------------------------------------------------------
+
+Moved proc from thread/proc.c to proc/proc.c (as per David Hollands email
+that said he was going to do this).
+
+Needed to change
+kern/conf/conf.kern
+----------------------------------------------------------------------
+
+whalemating.c
+Changed some fork_thread calls to pass the proc parameter to the thread_fork call
+and remove the call by address thread parameter.
+
+----------------------------------------------------------------------
+We may or may not want to include these in the tarball we give out.
+
+Made some changes so that I could compile A3 without having implemented
+everything. This was done by adding some stubs for a number functions
+and adding the stanza to conf/conf.kern 
+defoption vm
+optfile   vm   vm/vm.c
+
+and the option vm to conf/ASST3 and conf/ASST3-OPT
+----------------------------------------------------------------------
+Fixed a typo in vm/addressspace.c
+
+ void
++#ifdef UW
++as_deactivate(void)
++#else
+ as_dectivate(void)
++#endif
+----------------------------------------------------------------------
+
+Added to kern/synchprobs/
+bowls.c and catmouse.c
+I did not add stoplight.c because it didn't seem to be complete
+and needed a fair bit of work.
+
+Added catmouse and function into menu.c
+
+# UW Mod
+optfile   synchprobs  synchprobs/catmouse.c
+optfile   synchprobs  synchprobs/bowls.c
+
+----------------------------------------------------------------------
+Created kern/include/synchprobs.h
+So we can have some prototypes for the functions used by catmouse.c and bowls.c
+
+----------------------------------------------------------------------
+Added 4 optional parameters for the cat/mouse problem.
+Cat eating and sleeping time and mouse eating and sleeping time.
+
+----------------------------------------------------------------------
+Added uw-vmstats.h to kern/include
+Added uw-vmstats.c to kern/vm
+
+And made needed configuration changes in kern/config
+
+----------------------------------------------------------------------
+Added stuff to 
+kern/conf/ASST* and kern/conf/conf.kern
+to do #if OPT_A1, OPT_A2, etc.
+
+----------------------------------------------------------------------
+Created mk/os161.uw-prog.mk to include some extra targets
+that are useful for debugging and to specify where to 
+find mk/uw-ld-scripts (used to separate data segments from code segments).
+
+Added mk/uw-ld-script and modified mk/os161.prog.mk
+to include mk/os161.uw-prog.mk and to include mk/os161-uw-prog.mk
+----------------------------------------------------------------------
+Ported user/uw-testbin over to the new way of using BSD Makefiles and includes
+----------------------------------------------------------------------
+Copied some of the local/UW programs we had added to testbin to
+user/uw-testbin and reworked the Makefiles etc. to work with
+the new environment.
+----------------------------------------------------------------------
+Added user/my-testbin
+----------------------------------------------------------------------
+Ported the uw-vmstats.[ch] files to the new kernel and
+synchronization methods.
+
+May want to change this to spinlocks at some point.
+
+======================================================================
+Found a minor bug in code that does/call as_activate.
+Kernel threads do not have a process so the call to find out
+what the address space is for the current process failed because
+there isn't a processes. Now just check if the caller has a process
+or not and if it doesn't we return NULL for the address space.
+
+======================================================================
+kern/test/synchtest.c
+Added code to clean up semphares, locks, and cvs after we are done with them.
+Also call thread_exit when each thread is finished.
+Should help us to run/rerun tests and provides better examples of how
+to uses these constructs.
+
+======================================================================
+Added another simple test for locks by adding test/uw-tests.c
+======================================================================

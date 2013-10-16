@@ -1,0 +1,44 @@
+Wed Jul  3 15:38:07 EDT 2013
+Tim Brecht
+======================================================================
+OS161:
+We should look at adjusting some of the other parameters
+to catmouse via command line also.
+
+Make these command line parameters too.
+
+/* number of seconds of delay used to simulate eating */
+#define CATEATINGTIME 1
+#define MOUSEEATINGTIME 3
+/* number of seconds of delay used to simulate sleeping */
+#define CATSLEEPINGTIME 5
+#define MOUSESLEEPINGTIME 3
+
+DONE
+
+-------
+Check if we want to also include/create a mytestbin directory.
+If we do simplify it from the one that Alex created.
+DONE
+
+======================================================================
+Copy programs from testbin that were added by others (Ken?) to uw-testbin
+DONE
+
+======================================================================
+ASSIGNMENTS TEXT:
+Add something to assignment 2 about maximum number of open files.
+
+See note in OS161 about changing parameters to cat and mouse problem.
+
+======================================================================
+COURSE NOTES:
+
+o Change P and V implementation
+o Shorten/remove link stuff.
+o Try to get through address translation quicker.
+o Add some address translation examples
+o Add a file system inode example
+o May need some stuff on muliprocessors/mulicores added to slides.
+
+-------
