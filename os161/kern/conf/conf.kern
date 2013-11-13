@@ -382,7 +382,7 @@ file      syscall/time_syscalls.c
 
 file      startup/main.c
 file      startup/menu.c
-
+file      startup/hello.c
 ########################################
 #                                      #
 #             Filesystems              #
