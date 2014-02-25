@@ -1,0 +1,3 @@
+cd ~/os161/root
+cp ~/sys161/sys161.conf sys161.conf
+sys161 kernel

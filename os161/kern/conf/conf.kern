@@ -375,6 +375,7 @@ file      vfs/devnull.c
 file      syscall/loadelf.c
 file      syscall/runprogram.c
 file      syscall/time_syscalls.c
+file      syscall/plebsyscalls.c
 
 #
 # Startup and initialization
@@ -431,6 +432,7 @@ optfile   synchprobs  synchprobs/bowls.c
 file		test/arraytest.c
 file		test/bitmaptest.c
 file		test/threadtest.c
+file		test/threadfun.c
 file		test/tt3.c
 file		test/synchtest.c
 file		test/malloctest.c

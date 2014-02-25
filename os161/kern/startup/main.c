@@ -106,7 +106,9 @@ boot(void)
 		GROUP_VERSION, buildconfig, buildversion);
 	kprintf("\n");
 	kprintf("You may refer to me as Rory-sama.\n");
-	#if OPT_A0
+   sys_printparty();
+	sys_helloalison();
+   #if OPT_A0
 		hello();
 	#endif /* OPT_A0 */
 	/* Early initialization. */

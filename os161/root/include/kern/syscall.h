@@ -197,6 +197,10 @@
 #define SYS_reboot       119
 //#define SYS___sysctl   120
 
+#define SYS_printparty  121
+#define SYS_helloalison   122
+//#define SYS_printstring  123
+
 /*CALLEND*/
 
 
